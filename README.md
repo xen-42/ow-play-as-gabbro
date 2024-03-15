@@ -8,3 +8,4 @@ Plans:
 - Change traveler dialogue to refer to you as Gabbro
 - Add dialogue with the Hatchling
 - Change the first loop sequence
+- Change the interaction with Self (or at least just the model)
