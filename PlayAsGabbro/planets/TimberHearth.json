@@ -3,7 +3,47 @@
   "name": "Timber Hearth",
   "Props": {
     "details": [
-
+      {
+        "path": "TimeLoopRing_Body/Characters_TimeLoopRing/NPC_Player",
+        "parentPath": "Sector_TH/Sector_Village/Sector_StartingCamp",
+        "isRelativeToParent": true,
+        "position": {
+          "x": 44.7979,
+          "y": 5.814,
+          "z": -10.5823
+        },
+        "rotation": {
+          "x": 2.5862,
+          "y": 183.9214,
+          "z": 14.7154
+        },
+        "removeChildren": [ "Traveller_Mesh_v01:Props_HEA_Jetpack", "ConversationZone_NPC_Player" ]
+      },
+      {
+        "path": "GabbroShip_Body/Sector_GabbroShip",
+        "position": {
+          "x": -16.2992,
+          "y": -50.5728,
+          "z": 227.6982
+        },
+        "rotation": {
+          "x": 76.88555,
+          "y": 163.9102,
+          "z": 167.6906
+        }
+      }
+    ],
+    "dialogue": [
+      {
+        "position": {
+          "x": 0,
+          "y": 1.6,
+          "z": 0
+        },
+        "xmlFile": "planets/text/Hatchling.xml",
+        "pathToAnimController": "Sector_TH/Sector_Village/Sector_StartingCamp/NPC_Player",
+        "isRelativeToParent": true
+      }
     ]
   }
 }

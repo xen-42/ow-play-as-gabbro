@@ -37,9 +37,11 @@
     <None Include="translations\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Remove="planets\assets\SkinReplacer.cs" />
     <None Include="addon-manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SkinReplacer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="planets\text\" />

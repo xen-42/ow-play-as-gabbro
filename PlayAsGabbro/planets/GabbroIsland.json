@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
+  "name": "GabbroIsland",
+  "removeChildren": [
+    "Sector_GabbroIsland/Interactables_GabbroIsland/Traveller_HEA_Gabbro",
+    "Sector_GabbroIsland/Interactables_GabbroIsland/Signal_Flute",
+    "Sector_GabbroIsland/Volumes_GabbroIsland/SignalDetectionTrigger_Flute"
+  ]
+}
