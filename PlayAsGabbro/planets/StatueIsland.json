@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
+  "name": "StatueIsland",
+  "Props": {
+    "details": [
+      {
+        "rename": "StatueIslandRadio",
+        "path": "Moon_Body/Sector_THM/Interactables_THM/Prefab_HEA_Recorder",
+        "position": {
+          "x": -8.820116,
+          "y": 2.678078,
+          "z": -72.83658
+        },
+        "rotation": {
+          "x": 13.941,
+          "y": 246.5149,
+          "z": 10.87164
+        }
+      }
+    ],
+    "dialogue": [
+      {
+        "rename": "RadioRemoteDialogue",
+        "blockAfterPersistentCondition": "SpokeToRadio",
+        "xmlFile": "planets/text/StatueIslandRadioRemote.xml",
+        "position": {
+          "x": -8.820116,
+          "y": 2.678078,
+          "z": -72.83658
+        },
+        "radius": 0,
+        "remoteTrigger": {
+          "rename": "RadioRemoteDialogueTrigger",
+          "position": {
+            "x": -6.325989,
+            "y": 6.539349,
+            "z": -57.77573
+          },
+          "radius": 8
+        }
+      },
+      {
+        "rename": "RadioDialogue",
+        "xmlFile": "planets/text/StatueIslandRadio.xml",
+        "pathToAnimController": "Sector_StatueIsland/StatueIslandRadio",
+        "position": {
+          "x": -8.820116,
+          "y": 2.678078,
+          "z": -72.83658
+        },
+        "radius": 1
+      }
+    ]
+  }
+}

@@ -27,58 +27,98 @@ namespace PlayAsGabbro
             var newHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
             newHorizons.LoadConfigs(this);
 
-            MeditationDialogue.Setup();
+            DialogueConditionHandler.Setup();
+
+            // Force first loop for testing
+            ModHelper.Events.Unity.RunWhen(() => PlayerData._currentGameSave != null, () => PlayerData._currentGameSave.loopCount = 1);
 
             // Example of accessing game code.
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
             {
+                // If they skipped the radio on the first loop make sure to set the condition
+                if (TimeLoop._loopCount > 1)
+                {
+                    PlayerData.SetPersistentCondition("SpokeToRadio", true);
+                }
+
                 if (loadScene == OWScene.SolarSystem || loadScene == OWScene.EyeOfTheUniverse)
                 {
+                    FireOnNextUpdate(SuitUpAsGabbro);
+                }
+                if (loadScene == OWScene.SolarSystem)
+                {
+                    // TODO: Only do this in the main solar system (NH compat)
                     StartCoroutine(SpawnCoroutine());
                 }
             };
+        }
+
+        private void SuitUpAsGabbro()
+        {
+            Locator.GetPlayerSuit().SuitUp(false, true, true);
+            SkinReplacer.ReplaceSkin(GameObject.Find("Player_Body"), true);
         }
 
         private IEnumerator SpawnCoroutine()
         {
             yield return new WaitForFixedUpdate();
 
-            Locator.GetPlayerSuit().SuitUp(false, true, true);
-            SkinReplacer.ReplaceSkin(GameObject.Find("Player_Body"), true);
-
+            // Repeat it else we get tossed around by physics and stuff
             for (int i = 0; i < 10; i++)
             {
                 OnPlayerSpawn();
+
                 yield return new WaitForFixedUpdate();
             }
-
         }
 
         private void OnPlayerSpawn()
         {
-            // Spawn player
-            var island = GameObject.Find("GabbroIsland_Body");
+            var gabbroIsland = GameObject.Find("GabbroIsland_Body");
+            var statueIsland = GameObject.Find("StatueIsland_Body");
             var player = Locator.GetPlayerBody();
-
-            var worldPosition = island.transform.TransformPoint(new Vector3(38.325f, 18.537f, 6.619f));
-            var worldRotation = island.transform.rotation;
-            player.WarpToPositionRotation(worldPosition, worldRotation);
-            player.SetVelocity(island.GetAttachedOWRigidbody().GetVelocity());
-            var campfire = island.GetComponentInChildren<Campfire>();
-            player.transform.LookAt(campfire.transform, island.transform.up);
-
-            // Spawn ship
             var ship = Locator.GetShipBody();
-            var shipWorldPosition = island.transform.position + player.transform.forward * 80f;
 
-            // Move position into the water
-            var giantsDeep = Locator.GetAstroObject(AstroObject.Name.GiantsDeep);
-            var relativePosition = giantsDeep.transform.InverseTransformPoint(shipWorldPosition);
-            var inWaterRelativePosition = relativePosition.normalized * 500f;
-            var finalShipWorldPosition = giantsDeep.transform.TransformPoint(inWaterRelativePosition);
+            // Spawn on Gabbro island
+            if (TimeLoop._loopCount > 1)
+            {
+                // Spawn player
+                var worldPosition = gabbroIsland.transform.TransformPoint(new Vector3(38.325f, 18.537f, 6.619f));
+                var worldRotation = gabbroIsland.transform.rotation;
+                player.WarpToPositionRotation(worldPosition, worldRotation);
+                player.SetVelocity(gabbroIsland.GetAttachedOWRigidbody().GetVelocity());
+                var campfire = gabbroIsland.GetComponentInChildren<Campfire>();
+                player.transform.LookAt(campfire.transform, gabbroIsland.transform.up);
 
-            ship.WarpToPositionRotation(finalShipWorldPosition, worldRotation);
-            ship.SetVelocity(island.GetAttachedOWRigidbody().GetVelocity());
+                // Spawn ship
+                var shipWorldPosition = gabbroIsland.transform.position + player.transform.forward * 80f;
+
+                // Move ship position into the water
+                var giantsDeep = Locator.GetAstroObject(AstroObject.Name.GiantsDeep);
+                var relativePosition = giantsDeep.transform.InverseTransformPoint(shipWorldPosition);
+                var inWaterRelativePosition = relativePosition.normalized * 500f;
+                var finalShipWorldPosition = giantsDeep.transform.TransformPoint(inWaterRelativePosition);
+
+                ship.WarpToPositionRotation(finalShipWorldPosition, worldRotation);
+                ship.SetVelocity(gabbroIsland.GetAttachedOWRigidbody().GetVelocity());
+            }
+            // Spawn on statue island (first loop)
+            else
+            {
+                // Spawn player
+                var worldPosition = statueIsland.transform.TransformPoint(new Vector3(-15.76197f, 1.707366f, -73.72968f));
+                var worldRotation = statueIsland.transform.rotation;
+
+                player.WarpToPositionRotation(worldPosition, worldRotation);
+                player.SetVelocity(statueIsland.GetAttachedOWRigidbody().GetVelocity());
+
+                // Spawn ship
+                var shipWorldPosition = statueIsland.transform.TransformPoint(new Vector3(-27.47425f, -0.6602894f, -86.83144f)) + statueIsland.transform.up;
+                var shipWorldRotation = statueIsland.transform.rotation;
+
+                ship.WarpToPositionRotation(shipWorldPosition, shipWorldRotation);
+                ship.SetVelocity(statueIsland.GetAttachedOWRigidbody().GetVelocity());
+            }
 
             if (!Physics.autoSyncTransforms)
             {

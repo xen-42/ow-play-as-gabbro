@@ -1,0 +1,25 @@
+<DialogueTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/dialogue_schema.xsd">
+  <NameField>radio</NameField>
+
+  <DialogueNode>
+    <Name>START</Name>
+    <EntryCondition>DEFAULT</EntryCondition>
+    <Dialogue>
+      <Page>Gabbro? Are you there? What took you so long! You weren't taking a nap were you? It's Hornfels!</Page>
+      <Page>Listen, the Nomai statue back here in the observatory, well, it opened its eyes! Not sure why, but it did!</Page>
+      <Page>Since you're already on Giant's Deep, we want you to check out the statue there. You know the one!</Page>
+      <Page>Hornfels out!</Page>
+    </Dialogue>
+    <SetPersistentCondition>SpokeToRadio</SetPersistentCondition>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>NoResponse</Name>
+    <EntryCondition>SpokeToRadio</EntryCondition>
+    <Dialogue>
+      <Page>...</Page>
+      <Page>There was no response.</Page>
+    </Dialogue>
+  </DialogueNode>
+
+</DialogueTree>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace PlayAsGabbro;
 
-internal static class MeditationDialogue
+internal static class DialogueConditionHandler
 {
     public static void Setup()
     {
@@ -18,6 +19,12 @@ internal static class MeditationDialogue
         if (DialogueConditionManager.SharedInstance.GetConditionState("HatchlingMeditate"))
         {
             Locator.GetDeathManager().KillPlayer(DeathType.Meditation);
+        }
+
+        // In case they go straight to the radio then walk into the trigger
+        if (TimeLoop._loopCount == 1 && PlayerData.GetPersistentCondition("SpokeToRadio"))
+        {
+            GameObject.Find("StatueIsland_Body/Sector_StatueIsland/RadioRemoteDialogueTrigger")?.gameObject?.SetActive(false);
         }
     }
 }

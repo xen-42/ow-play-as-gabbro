@@ -43,7 +43,4 @@
     </None>
     <None Include="SkinReplacer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="planets\text\" />
-  </ItemGroup>
 </Project>
