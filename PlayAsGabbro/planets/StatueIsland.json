@@ -1,6 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/body_schema.json",
   "name": "StatueIsland",
+  "removeChildren": [
+    // The statue
+    "Sector_StatueIsland/Props_StatueIsland/BatchedGroup/BatchedMeshRenderers_1",
+    "Sector_StatueIsland/Props_StatueIsland/BatchedGroup/BatchedMeshRenderers_4"
+  ],
   "Props": {
     "details": [
       {
@@ -15,6 +20,23 @@
           "x": 13.941,
           "y": 246.5149,
           "z": 10.87164
+        }
+      },
+      {
+        "rename": "NomaiStatueGabbro",
+        "path": "TimberHearth_Body/Sector_TH/Sector_Village/Sector_Observatory/Interactables_Observatory/NomaiStatueExhibit",
+        "removeChildren": [ "NomaiHeadStatue/Props_NOM_StatueHead/Statue_collider", "InteractVolume" ],
+        "isRelativeToParent": true,
+        "parentPath": "Sector_StatueIsland",
+        "position": {
+          "x": -3.8806,
+          "y": 1.9265,
+          "z": -46.2221
+        },
+        "rotation": {
+          "x": 339.9289,
+          "y": 125.1332,
+          "z": 68.1752
         }
       }
     ],

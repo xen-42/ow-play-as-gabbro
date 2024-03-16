@@ -21,6 +21,11 @@ internal static class DialogueConditionHandler
             Locator.GetDeathManager().KillPlayer(DeathType.Meditation);
         }
 
+        if (DialogueConditionManager.SharedInstance.GetConditionState("Cheater"))
+        {
+            Locator.GetDeathManager().KillPlayer(DeathType.CrushedByElevator);
+        }
+
         // In case they go straight to the radio then walk into the trigger
         if (TimeLoop._loopCount == 1 && PlayerData.GetPersistentCondition("SpokeToRadio"))
         {

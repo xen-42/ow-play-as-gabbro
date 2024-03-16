@@ -1,7 +1,9 @@
-﻿using OWML.Common;
+﻿using HarmonyLib;
+using OWML.Common;
 using OWML.ModHelper;
 using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 namespace PlayAsGabbro
@@ -9,6 +11,8 @@ namespace PlayAsGabbro
     public class PlayAsGabbro : ModBehaviour
     {
         public static PlayAsGabbro Instance { get; private set; }
+
+        public INewHorizons NewHorizons { get; private set; }
 
         private void Awake()
         {
@@ -23,14 +27,13 @@ namespace PlayAsGabbro
             // Starting here, you'll have access to OWML's mod helper.
             ModHelper.Console.WriteLine($"My mod {nameof(PlayAsGabbro)} is loaded!", MessageType.Success);
 
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
             // Get the New Horizons API and load configs
-            var newHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
-            newHorizons.LoadConfigs(this);
+            NewHorizons = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
+            NewHorizons.LoadConfigs(this);
 
             DialogueConditionHandler.Setup();
-
-            // Force first loop for testing
-            ModHelper.Events.Unity.RunWhen(() => PlayerData._currentGameSave != null, () => PlayerData._currentGameSave.loopCount = 1);
 
             // Example of accessing game code.
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
@@ -63,6 +66,28 @@ namespace PlayAsGabbro
         {
             yield return new WaitForFixedUpdate();
 
+            // First loop stuff before pairing
+            if (TimeLoop._loopCount == 1 && !TimeLoop.IsTimeFlowing())
+            {
+                var firstLoopStuff = new GameObject("FirstLoopStuff");
+                firstLoopStuff.AddComponent<GabbroMemoryUplinkFixer>();
+
+                // Lock ship hatch until paired
+                var hatch = GameObject.FindObjectOfType<HatchController>();
+                hatch.CloseHatch();
+                hatch.transform.parent.Find("TractorBeam").gameObject.SetActive(false);
+
+                // Custom hornfels dialogue
+                var hornfelsDialogue = GameObject.Find("TimberHearth_Body/Sector_TH/Sector_Village/Sector_Observatory/Characters_Observatory/Villager_HEA_Hornfels/ConversationZone_Hornfels");
+                hornfelsDialogue.gameObject.SetActive(false);
+
+                var hornfels = hornfelsDialogue.transform.parent;
+                var (dialogue, _) = NewHorizons.SpawnDialogue(this, Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject, "planets/text/Hornfels.xml",
+                    pathToAnimController: "Sector_TH/Sector_Village/Sector_Observatory/Characters_Observatory/Villager_HEA_Hornfels");
+                dialogue.transform.parent = hornfels;
+                dialogue.transform.localPosition = new Vector3(0f, 1.6f, 0f);
+            }
+
             // Repeat it else we get tossed around by physics and stuff
             for (int i = 0; i < 10; i++)
             {
@@ -70,6 +95,11 @@ namespace PlayAsGabbro
 
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        private void CloseHatch()
+        {
+
         }
 
         private void OnPlayerSpawn()
@@ -109,8 +139,13 @@ namespace PlayAsGabbro
                 var worldPosition = statueIsland.transform.TransformPoint(new Vector3(-15.76197f, 1.707366f, -73.72968f));
                 var worldRotation = statueIsland.transform.rotation;
 
-                player.WarpToPositionRotation(worldPosition, worldRotation);
-                player.SetVelocity(statueIsland.GetAttachedOWRigidbody().GetVelocity());
+                // Check if we didn't just respawn after linking (PlayerSpawner will handle us in that case)
+                if (!TimeLoop.IsTimeFlowing())
+                {
+                    // First spawn
+                    player.WarpToPositionRotation(worldPosition, worldRotation);
+                    player.SetVelocity(statueIsland.GetAttachedOWRigidbody().GetVelocity());
+                }
 
                 // Spawn ship
                 var shipWorldPosition = statueIsland.transform.TransformPoint(new Vector3(-27.47425f, -0.6602894f, -86.83144f)) + statueIsland.transform.up;

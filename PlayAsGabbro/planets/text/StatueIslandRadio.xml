@@ -11,6 +11,8 @@
       <Page>Hornfels out!</Page>
     </Dialogue>
     <SetPersistentCondition>SpokeToRadio</SetPersistentCondition>
+    <!-- Just so you can now link to the statue -->
+    <SetPersistentCondition>LAUNCH_CODES_GIVEN</SetPersistentCondition>
   </DialogueNode>
 
   <DialogueNode>
