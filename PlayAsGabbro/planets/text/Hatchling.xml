@@ -1,25 +1,161 @@
 <DialogueTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Outer-Wilds-New-Horizons/new-horizons/main/NewHorizons/Schemas/dialogue_schema.xsd">
   <NameField>Hatchling</NameField>
 
+  <!-- This file after the first few loops, and the player has already met Gabbro -->
+
   <DialogueNode>
     <Name>START</Name>
     <EntryCondition>DEFAULT</EntryCondition>
+    <Randomize/>
     <Dialogue>
-      <Page>Hi Gabbro.</Page>
+      <Page>Hey time buddy, welcome back to Timber Hearth!</Page>
+    </Dialogue>
+    <Dialogue>
+      <Page>Got sick of the rain on Giant's Deep eh Gabbro? How are you?</Page>
+    </Dialogue>
+    <Dialogue>
+      <Page>Hey, somebody I can talk to who doesn't think I'm crazy! How's space today?</Page>
+    </Dialogue>
+
+    <DialogueTarget>HatchlingMenu</DialogueTarget>
+    <SetCondition>SaidHiToHatchling</SetCondition>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>HatchlingMain_Secondary</Name>
+    <EntryCondition>SaidHiToHatchling</EntryCondition>
+    <Dialogue>
+      <Page>Welcome back!</Page>
+    </Dialogue>
+    <DialogueTarget>HatchlingMenu</DialogueTarget>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>HatchlingMenu</Name>
+    <Dialogue>
+      <Page>What's new?</Page>
     </Dialogue>
 
     <DialogueOptionsList>
       <DialogueOption>
-        <Text>Hi Hatchling</Text>
-        <DialogueTarget>1</DialogueTarget>
+        <Text>I found something!</Text>
+        <DialogueTarget>FoundSomethingMenu</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>So how is your first day being an official member of Outer Wilds Ventures?</Text>
+        <DialogueTarget>FirstDay</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Are you okay? What with the whole dying over and over thing?</Text>
+        <DialogueTarget>AreYouOkay</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Alright well, I'm out, take it easy.</Text>
+        <DialogueTarget>Goodbye</DialogueTarget>
       </DialogueOption>
     </DialogueOptionsList>
   </DialogueNode>
 
   <DialogueNode>
-    <Name>1</Name>
+    <Name>FirstDay</Name>
     <Dialogue>
-      <Page>Bye bye.</Page>
+      <Page>Oh well, you know, first go around I uhh... <![CDATA[<Pause>]]>Kind of... <![CDATA[<Pause>]]>Well...</Page>
+      <Page>You see... <![CDATA[<Pause>]]>I forgot to put my suit on when visiting the Attlerock.</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Oh...</Text>
+        <DialogueTarget>FirstDayDied</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>FirstDayDied</Name>
+    <Dialogue>
+      <Page>Yeah... <![CDATA[<Pause>]]>So I haven't gone back up yet. Maybe on another loop.</Page>
+      <Page>Got to say I'm quite pleased about this whole time loop thing!</Page>
+    </Dialogue>
+    <DialogueTarget>HatchlingMenu</DialogueTarget>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>AreYouOkay</Name>
+    <Dialogue>
+      <Page>I'm fine... I guess? I mostly just chat with Slate. Roast some marshmallows. I'm truly exhausting all possible avenues of conversation with them.</Page>
+      <Page>How about you? You seem pretty calm considering everything.</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Oh yeah, well, deep breaths... I've been doing a lot of meditation.</Text>
+        <DialogueTarget>MeditationMenu</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>MeditationMenu</Name>
+    <Dialogue>
+      <Page>Meditation eh? I never took you for the type.</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Want me to teach you? It'll be the next loop before you know it.</Text>
+        <DialogueTarget>YesMeditate</DialogueTarget>
+      </DialogueOption>
+      <DialogueOption>
+        <Text>Well hey, we can't all be Feldspar, huh?</Text>
+        <DialogueTarget>HatchlingMenu</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>YesMeditate</Name>
+    <Dialogue>
+      <Page>Sure, why not.</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Okay, close your eyes...</Text>
+        <DialogueTarget>StartMeditating</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>StartMeditating</Name>
+    <Dialogue>
+      <Page>Here goes...</Page>
+    </Dialogue>
+    <SetCondition>HatchlingMeditate</SetCondition>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>Goodbye</Name>
+    <Dialogue>
+      <Page>See you later!</Page>
+    </Dialogue>
+  </DialogueNode>
+
+  <!-- Conditional discovery menu! -->
+  <DialogueNode>
+    <Name>FoundSomethingMenu</Name>
+    <Dialogue>
+      <Page>Oh really? What was it?</Page>
+    </Dialogue>
+    <DialogueOptionsList>
+      <DialogueOption>
+        <Text>Actually, nevermind.</Text>
+        <DialogueTarget>FoundSomethingExit</DialogueTarget>
+      </DialogueOption>
+    </DialogueOptionsList>
+  </DialogueNode>
+
+  <DialogueNode>
+    <Name>FoundSomethingExit</Name>
+    <Dialogue>
+      <Page>No worries. Let me know if you find anything cool, I'll probably just ugh, still be here!</Page>
     </Dialogue>
   </DialogueNode>
 
