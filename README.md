@@ -1,4 +1,4 @@
-# You can now play as Gabbro
+![gabbro](https://github.com/xen-42/ow-play-as-gabbro/assets/22628069/e45f3ec8-a211-406c-9bb3-261965f51dc9)
 
 Features:
 - Spawn on Giants Deep with your ship
